@@ -27,5 +27,3 @@ export default function Home() {
         </>
     )
 }
-
-//https://dash.fortnite-api.com/
