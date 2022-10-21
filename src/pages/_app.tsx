@@ -1,13 +1,17 @@
 import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
 import { Header } from '../components/Header'
+import { AuthProvider } from '../contexts/AuthContext'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <>
+        <AuthProvider>
             <Header />
             <Component {...pageProps} />
-        </>
+            <ToastContainer autoClose={3000} />
+        </AuthProvider>
     )
 }
 
