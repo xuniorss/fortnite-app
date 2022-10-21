@@ -9,6 +9,7 @@ type AuthContextData = {
     isAuthenticated: boolean
     signOut: () => void
     signUp: (credentials: SignUpProps) => Promise<void>
+    signIn: (credentials: SignInProps) => Promise<void>
 }
 
 type UserProps = {
@@ -56,6 +57,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }, [])
 
+    async function signIn({ email, password }: SignInProps) {
+        try {
+            const response = await api.post('/session', { email, password })
+            const { id, username, token } = response.data
+
+            setCookie(undefined, '@nextauth.token.fortnite', token, {
+                maxAge: 60 * 60 * 24 * 30,
+                path: '/'
+            })
+
+            setUser({ id, username, email })
+
+            api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+            toast.success('Successfully logged in.')
+            Router.push('/shop')
+        } catch (error) {
+            toast.error(error.response?.data.error)
+            console.log('Error accessing', error)
+        }
+    }
+
     async function signUp({ email, username, password }: SignUpProps) {
         try {
             const response = await api.post('/user', { email, username, password })
@@ -72,7 +95,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             user,
             isAuthenticated,
             signOut,
-            signUp
+            signUp,
+            signIn
         }}>
             { children }
         </AuthContext.Provider>
