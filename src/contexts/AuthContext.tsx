@@ -8,6 +8,7 @@ type AuthContextData = {
     user: UserProps
     isAuthenticated: boolean
     signOut: () => void
+    signUp: (credentials: SignUpProps) => Promise<void>
 }
 
 type UserProps = {
@@ -55,11 +56,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }, [])
 
+    async function signUp({ email, username, password }: SignUpProps) {
+        try {
+            const response = await api.post('/user', { email, username, password })
+            toast.success('Account created successfully.')
+            Router.push('/')
+        } catch (error) {
+            toast.error(error.response.data.error)
+            console.log('Error registering: ', error)
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             user,
             isAuthenticated,
-            signOut
+            signOut,
+            signUp
         }}>
             { children }
         </AuthContext.Provider>
