@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: 'https://fortnite-api.com/v2/shop/br'
+const apiShop = axios.create({
+    baseURL: 'https://fortnite-api.com/v2/shop'
 })
 
-export { api }
+export { apiShop }
 
 // https://dash.fortnite-api.com/

@@ -20,7 +20,11 @@ export function Header() {
                         <Link href={'/profile'}>
                             <a>Profile</a>
                         </Link>
-                    ) : ''}
+                    ) : (
+                        <Link href={'/'}>
+                            <a>Sign In</a>
+                        </Link>
+                    )}
                 </nav>
             </div>
         </header>
